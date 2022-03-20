@@ -5,7 +5,7 @@ import Navbar from "./components/global/Navbar.vue";
 <template>
   <div class="flex w-screen flex-col h-screen items-center">
     <Navbar />
-    <router-view class="flex-grow w-11/12"></router-view>
+    <router-view class="flex-grow w-screen m-5"></router-view>
   </div>
 </template>
 

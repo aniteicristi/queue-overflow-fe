@@ -1,12 +1,10 @@
-<script lang="ts">
-import { computed, defineComponent } from "vue";
+<script setup lang="ts">
 import { RouterLink } from "vue-router";
-export default defineComponent({});
 </script>
 
 <template>
   <div class="navbar bg-slate-800 p-3 items-center">
-    <div class="bg-base-100 rounded-xl p-2 flex-auto">
+    <div class="bg-base-200 rounded-xl p-2 flex-auto">
       <router-link to="/" class="flex-1">
         <div>
           <button class="btn btn-ghost text-lg">QUEUE OVERFLOW</button>
@@ -17,14 +15,14 @@ export default defineComponent({});
           <input type="text" placeholder="Search..." class="input input-bordered" />
         </div>
       </div>
-      <div class="dropdown dropdown-end ml-5">
+      <div class="dropdown dropdown-hover dropdown-end ml-5">
         <label tabindex="0" class="btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full">
             <img src="https://ui-avatars.com/api/?background=1E313B&color=fff&name=Jojo" />
           </div>
         </label>
 
-        <ul tabindex="0" class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
+        <ul tabindex="0" class="p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
           <li>
             <router-link to="/profile">Profile</router-link>
           </li>
