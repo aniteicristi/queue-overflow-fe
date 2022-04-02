@@ -9,7 +9,8 @@ defineProps<{
   question: Question;
 }>();
 
-function openQuestion(id: number) {
+function openQuestion(id: number | undefined) {
+  if (!id) return;
   router.push(`/question/${id}`);
 }
 
@@ -19,10 +20,21 @@ function clamp(text: string, maxLen: number = 40) {
 </script>
 
 <template>
-  <div class="card pa-3 ma-7 w-2/3 bg-base-100 shadow-md hover:shadow-lg" @click="openQuestion(question.id)">
+  <div class="card p-3 m-7 w-2/3 bg-base-100 shadow-md hover:shadow-lg" @click="openQuestion(question.id)">
     <div class="card-body">
-      <h2 class="card-title">{{ question.title }}</h2>
-      <p>{{ clamp(question.text) }}</p>
+      <div class="flex w-full">
+        <div class="w-[5%] flex items-start flex-col">
+          <p>Clout</p>
+          {{ question.clout }}
+        </div>
+        <div class="w-[95%]">
+          <h2 class="card-title text-3xl">{{ question.title }}</h2>
+          <p>{{ clamp(question.text) }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="card-actions flex flex-row-reverse">
+      {{ `Asked by ${question.author.email} on ${question.createdAt.toDateString()}` }}
     </div>
   </div>
 </template>
