@@ -1,5 +1,8 @@
 import { plainToInstance } from "class-transformer";
+import { Answer } from "../models/Answer.model";
 import { Question } from "../models/Question.model";
+import { Tag } from "../models/Tag.model";
+import { User, UserRole } from "../models/User.model";
 import { ApiClient } from "./api.client";
 
 export class QuestionsService {
@@ -26,7 +29,16 @@ export class QuestionsService {
   }
 
   public async get(question: string | string[]): Promise<Question> {
-    const result = await ApiClient.instance.get(`questions/${question}`);
-    return plainToInstance(Question, result.data)[0];
+    // const result = await ApiClient.instance.get(`questions/${question}`);
+    // return plainToInstance(Question, result.data)[0];
+    return new Question(
+      new User(123, "hilo", UserRole.NORMAL, 0),
+      "Hello",
+      "World",
+      new Date("2001/12/01"),
+      0,
+      [new Tag("hello"), new Tag("world")],
+      [new Answer(123, "Hi there, new phone, who dis?", new User(123, "hilo", UserRole.NORMAL, 0), 2, new Date("2001/12/01"))]
+    );
   }
 }

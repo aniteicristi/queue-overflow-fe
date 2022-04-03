@@ -17,8 +17,8 @@ export class ApiClient {
       method: "GET",
       mode: "cors",
       headers: {
-        Authentication: `Bearer ${AuthService.instance.token}`,
         "Access-Control-Allow-Origin": "*",
+        Authentication: `Bearer ${AuthService.instance.token}`,
         "Content-Type": "application/json",
       },
     });

@@ -31,7 +31,7 @@ function addTag(str: string) {
     <div class="mt-5 inline-flex mb-16">
       <div class="dropdown w-1/3">
         <div class="input-group w-1/3 mb-2">
-          <input ref="tagInput" type="text" placeholder="Add a tag..." class="input input-bordered input-sm" v-model="tagString" />
+          <input type="text" placeholder="Add a tag..." class="input input-bordered input-sm" v-model="tagString" />
           <button class="btn btn-sm" @click="addTag(tagString)">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />

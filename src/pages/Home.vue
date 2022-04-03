@@ -8,10 +8,10 @@ import { User, UserRole } from "../models/User.model";
 import { useRouter } from "vue-router";
 
 const questions = ref<Question[]>([
-  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, []),
-  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, []),
-  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, []),
-  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, []),
+  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, [], []),
+  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, [], []),
+  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, [], []),
+  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, [], []),
 ]);
 const router = useRouter();
 
@@ -31,7 +31,7 @@ function openQuestion(q: Question) {
     </div>
     <suspense>
       <div v-for="question in questions" class="w-full flex flex-col items-center">
-        <question-card :question="question" class="my-7" @click="" />
+        <question-card :question="question" class="my-7" @click="openQuestion(question)" />
       </div>
     </suspense>
   </div>

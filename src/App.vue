@@ -5,7 +5,7 @@ import Navbar from "./components/global/Navbar.vue";
 <template>
   <div class="flex w-screen flex-col h-screen items-center">
     <Navbar />
-    <router-view v-slot="{ Component, route }" class="flex-grow w-screen overflow-y-auto">
+    <router-view v-slot="{ Component, route }" class="w-screen overflow-y-auto">
       <transition name="fade">
         <component :is="Component" />
       </transition>

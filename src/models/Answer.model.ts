@@ -1,8 +1,9 @@
 import { Expose, Type } from "class-transformer";
 import { Question } from "./Question.model";
 import "reflect-metadata";
+import { User } from "./User.model";
 export class Answer {
-  constructor(id: number, text: string, author: User, question: Question, clout: number, createdAt: Date) {
+  constructor(id: number, text: string, author: User, clout: number, createdAt: Date, question?: Question) {
     this.id = id;
     this.text = text;
     this.author = author;
@@ -21,7 +22,7 @@ export class Answer {
   author: User;
 
   @Type(() => Question)
-  question: Question;
+  question?: Question;
 
   @Expose()
   clout: number;
