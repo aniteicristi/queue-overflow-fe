@@ -2,7 +2,9 @@
 import { RouterLink } from "vue-router";
 import { AuthService } from "../../services/auth.service";
 import { useRouter } from "vue-router";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { User } from "../../models/User.model";
+import { UserService } from "../../services/users.service";
 
 const router = useRouter();
 
@@ -12,6 +14,12 @@ function logout() {
   AuthService.instance.logout();
   router.replace("/login");
 }
+
+const loggedUser = ref<User | undefined | null>(null);
+
+onMounted(async () => {
+  loggedUser.value = await UserService.instance.getCurrentUser();
+});
 </script>
 
 <template>
@@ -22,15 +30,11 @@ function logout() {
           <button class="btn btn-ghost text-lg">QUEUE OVERFLOW</button>
         </div>
       </router-link>
-      <div class="flex-none gap-2" v-if="loggedIn">
-        <div class="form-control">
-          <input type="text" placeholder="Search..." class="input input-bordered" />
-        </div>
-      </div>
+
       <div class="dropdown dropdown-hover dropdown-end ml-5" v-if="loggedIn">
-        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+        <label tabindex="0" class="btn btn-ghost btn-circle avatar" v-if="loggedUser != null">
           <div class="w-10 rounded-full">
-            <img src="https://ui-avatars.com/api/?background=1E313B&color=fff&name=Chi+Chi" />
+            <img :src="loggedUser.getUserUrl()" />
           </div>
         </label>
 

@@ -12,7 +12,7 @@ export class ApiClient {
     } else return ApiClient._instance;
   }
 
-  public async get(path: string): Promise<any> {
+  public async get(path: string): Promise<Response> {
     return window.fetch(this.baseurl + path, {
       method: "GET",
       mode: "cors",

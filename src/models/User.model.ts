@@ -25,4 +25,8 @@ export class User {
 
   @Expose()
   score: number;
+
+  public getUserUrl(): string {
+    return `https://avatars.dicebear.com/api/micah/${this.email}.svg`;
+  }
 }

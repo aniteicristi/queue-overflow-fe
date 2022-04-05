@@ -23,7 +23,7 @@ export class QuestionsService {
   public async getAll(): Promise<Question[]> {
     if (this.questions.length == 0) {
       const result = await ApiClient.instance.get("questions");
-      this.questions = plainToInstance(Question, result.data);
+      this.questions = plainToInstance(Question, await result.json());
     }
     return this.questions;
   }

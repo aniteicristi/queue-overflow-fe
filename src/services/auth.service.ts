@@ -11,7 +11,7 @@ export class AuthService {
     } else return AuthService._instance;
   }
 
-  constructor() {
+  private constructor() {
     this.isLoggedIn = ref(false);
     this.token = window.localStorage.getItem("access_token") ?? "";
     if (this.token != "") this.isLoggedIn.value = true;
