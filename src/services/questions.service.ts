@@ -1,9 +1,11 @@
 import { plainToInstance } from "class-transformer";
+import { ref, Ref } from "vue";
 import { Answer } from "../models/Answer.model";
 import { Question } from "../models/Question.model";
 import { Tag } from "../models/Tag.model";
 import { User, UserRole } from "../models/User.model";
 import { ApiClient } from "./api.client";
+import { UserService } from "./users.service";
 
 export class QuestionsService {
   private static _instance: QuestionsService;
@@ -14,31 +16,33 @@ export class QuestionsService {
       return QuestionsService._instance;
     } else return QuestionsService._instance;
   }
-  private questions: Question[];
+  public questions: Ref<Question[]>;
 
   private constructor() {
-    this.questions = <Question[]>[];
+    this.questions = ref<Question[]>([]);
   }
 
-  public async getAll(): Promise<Question[]> {
-    if (this.questions.length == 0) {
+  public async getAll(): Promise<Ref<Question[]>> {
+    if (this.questions.value.length == 0) {
       const result = await ApiClient.instance.get("questions");
-      this.questions = plainToInstance(Question, await result.json());
+      this.questions.value = plainToInstance(Question, await result.json());
     }
+    this.questions.value.sort((a, b) => a.createdAt.getMilliseconds() - b.createdAt.getMilliseconds());
     return this.questions;
   }
 
   public async get(question: string | string[]): Promise<Question> {
     // const result = await ApiClient.instance.get(`questions/${question}`);
     // return plainToInstance(Question, result.data)[0];
-    return new Question(
-      new User(123, "hilo", UserRole.NORMAL, 0),
-      "Hello",
-      "World",
-      new Date("2001/12/01"),
-      0,
-      [new Tag("hello"), new Tag("world")],
-      [new Answer(123, "Hi there, new phone, who dis?", new User(123, "hilo", UserRole.NORMAL, 0), 2, new Date("2001/12/01"))]
-    );
+    return this.questions.value.find((q) => q.id == +question) as Question;
+  }
+
+  public async addQuestion(title: string, text: string, tags: Tag[]) {
+    let user = await UserService.instance.getCurrentUser();
+    if (user == undefined) return;
+    let id = this.questions.value.map((q) => q.id).reduce((p, c) => Math.max(p, c)) + 1;
+    let question = new Question(id, user, title, text, new Date(), 0, tags, []);
+
+    this.questions.value.unshift(question);
   }
 }

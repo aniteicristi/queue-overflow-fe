@@ -5,18 +5,19 @@ import { User } from "./User.model";
 import { Answer } from "./Answer.model";
 
 export class Question {
-  constructor(author: User, title: string, text: string, createdAt: Date, clout: number, tags: Tag[], answers: Answer[]) {
+  constructor(id: number, author: User, title: string, text: string, createdAt: Date, clout: number, tags: Tag[], answers: Answer[]) {
+    this.id = id;
     this.author = author;
     this.text = text;
     this.title = title;
     this.createdAt = createdAt;
     this.clout = clout;
     this.tags = tags;
-    this.answer = answers;
+    this.answers = answers;
   }
 
   @Expose()
-  id: number | undefined;
+  id: number;
 
   @Type(() => User)
   author: User;
@@ -37,5 +38,5 @@ export class Question {
   clout: number;
 
   @Type(() => Answer)
-  answer: Answer[];
+  answers: Answer[];
 }

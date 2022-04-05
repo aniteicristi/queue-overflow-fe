@@ -16,11 +16,18 @@ const props = defineProps({ question: { type: Question, required: true } });
           <h1 class="text-4xl">{{ question.title }}</h1>
           <p class="text-lg">{{ question.text }}</p>
         </div>
-        <div class="self-end w-1/3 pt-20">
+        <div class="self-end w-1/2 pt-20">
           Asked by:
-          <div class="card bg-base-300 px-5 py-2 w-full">
-            <p class="text-lg">{{ question.author.email }}</p>
-            {{ `Clout: ${question.author.score}` }}
+          <div class="card bg-base-300 px-5 py-2 w-full flex flex-row">
+            <div class="avatar w-12 pr-2">
+              <div class="rounded-full">
+                <img :src="question.author.getUserUrl()" />
+              </div>
+            </div>
+            <div>
+              <p class="text-lg">{{ question.author.email }}</p>
+              {{ `Clout: ${question.author.score}` }}
+            </div>
           </div>
         </div>
       </div>

@@ -15,14 +15,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="w-screen p-5 flex items-center flex-col" v-if="question != null">
-    <QuestionOverview :question="question" />
-    <div class="card w-2/3 bg-base-200 card-compact">
-      <div class="card-body flex flex-row items-end">
-        <textarea class="textarea w-11/12" />
-        <button class="btn btn-outline btn-secondary w-1/12">ANSWER</button>
+  <div class="w-screen p-5">
+    <div class="flex flex-col items-center" v-if="question != null">
+      <QuestionOverview :question="question" />
+      <div class="card w-2/3 bg-base-200 card-compact">
+        <div class="card-body flex flex-row items-end">
+          <textarea class="textarea w-11/12" />
+          <button class="btn btn-outline btn-secondary w-1/12">ANSWER</button>
+        </div>
       </div>
+      <AnswerCard v-for="answer in question.answers" :answer="answer" />
     </div>
-    <AnswerCard v-for="answer in question.answer" :answer="answer" />
   </div>
 </template>

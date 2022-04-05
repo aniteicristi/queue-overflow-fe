@@ -14,7 +14,7 @@ function openQuestion(id: number | undefined) {
   router.push(`/question/${id}`);
 }
 
-function clamp(text: string, maxLen: number = 40) {
+function clamp(text: string, maxLen: number = 60) {
   return text.length > maxLen ? text.substring(0, maxLen) + "..." : text;
 }
 </script>
@@ -23,7 +23,7 @@ function clamp(text: string, maxLen: number = 40) {
   <div class="card p-3 m-7 w-2/3 bg-base-100 shadow-md hover:shadow-lg" @click="openQuestion(question.id)">
     <div class="card-body">
       <div class="flex w-full">
-        <div class="w-[5%] flex items-start flex-col">
+        <div class="w-[10%]">
           <p>Clout</p>
           {{ question.clout }}
         </div>

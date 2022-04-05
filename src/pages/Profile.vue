@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { computed } from "@vue/reactivity";
 import { onMounted, ref } from "vue";
-import { User } from "../models/User.model";
+import { User, UserRole } from "../models/User.model";
 import { UserService } from "../services/users.service";
 
 const currentUser = ref<User | null | undefined>(null);
+
+const isBanned = computed(() => currentUser.value?.role == UserRole.BANNED);
+const isAdmin = computed(() => currentUser.value?.role == UserRole.MODERATOR);
 
 onMounted(async () => {
   currentUser.value = await UserService.instance.getCurrentUser();
@@ -22,7 +26,7 @@ onMounted(async () => {
         <div class="flex flex-col my-auto">
           <h1 class="text-3xl">{{ currentUser.email }}</h1>
           <h2 class="text-xl">{{ "User clout: " + currentUser.score }}</h2>
-          <h2 class="text-xl">{{ "Role : " + currentUser.role.toUpperCase() }}</h2>
+          <h2 class="text-xl" :class="{ 'text-red-700': isBanned, 'text-green-700': isAdmin }">{{ "Role : " + currentUser.role.toUpperCase() }}</h2>
         </div>
       </div>
     </div>

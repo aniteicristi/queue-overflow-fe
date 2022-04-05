@@ -1,5 +1,5 @@
 import { AuthService } from "./auth.service";
-
+import questions from "../mocks/questions.json";
 export class ApiClient {
   private static _instance: ApiClient;
 
@@ -13,6 +13,8 @@ export class ApiClient {
   }
 
   public async get(path: string): Promise<Response> {
+    if (path == "questions") return new Response(new Blob([JSON.stringify(questions, null, 2)], { type: "application/json" }), { status: 200, statusText: "OK" });
+
     return window.fetch(this.baseurl + path, {
       method: "GET",
       mode: "cors",

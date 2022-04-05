@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { Tag } from "../../models/Tag.model";
+import { QuestionsService } from "../../services/questions.service";
 
 const tags = ref(<Tag[]>[]);
 const tagString = ref("");
 const tagInput = ref(null);
+const titleInput = ref("");
+const textInput = ref("");
 
 const tagRecommend = ref([new Tag("vuejs"), new Tag("typescript"), new Tag("nestjs"), new Tag("java")]);
 
@@ -20,13 +23,17 @@ function addTag(str: string) {
   tags.value.push(new Tag(str));
   tagString.value = "";
 }
+
+function postQuestion() {
+  QuestionsService.instance.addQuestion(titleInput.value, textInput.value, tags.value);
+}
 </script>
 
 <template>
   <div class="card px-10 py-5 m-10 bg-base-200 shadow-md w-2/3">
     <h1 class="text-3xl">Ask a question:</h1>
-    <input type="text" placeholder="Title" class="input w-1/2 mt-5" />
-    <textarea placeholder="Question..." class="textarea mt-5" />
+    <input type="text" placeholder="Title" class="input w-1/2 mt-5" v-model="titleInput" />
+    <textarea placeholder="Question..." class="textarea mt-5" v-model="textInput" />
 
     <div class="mt-5 inline-flex mb-16">
       <div class="dropdown w-1/3">
@@ -54,7 +61,7 @@ function addTag(str: string) {
       </div>
     </div>
     <div class="card-actions flex flex-row justify-end">
-      <button class="btn btn-secondary btn-outline">Post</button>
+      <button class="btn btn-secondary btn-outline" @click="postQuestion()">Post</button>
     </div>
   </div>
 </template>

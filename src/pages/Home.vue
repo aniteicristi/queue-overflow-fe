@@ -6,17 +6,14 @@ import { QuestionsService } from "../services/questions.service";
 import QuestionCreateCard from "../components/global/QuestionCreateCard.vue";
 import { User, UserRole } from "../models/User.model";
 import { useRouter } from "vue-router";
+import { computed } from "@vue/reactivity";
 
-const questions = ref<Question[]>([
-  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, [], []),
-  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, [], []),
-  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, [], []),
-  new Question(new User(123, "hilo", UserRole.NORMAL, 0), "Hello", "World", new Date("2001/12/01"), 0, [], []),
-]);
+let questions = QuestionsService.instance.questions;
+
 const router = useRouter();
 
 onMounted(async () => {
-  //questions.value = await QuestionsService.instance.getAll();
+  await QuestionsService.instance.getAll();
 });
 
 function openQuestion(q: Question) {
