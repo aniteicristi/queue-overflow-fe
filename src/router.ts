@@ -10,7 +10,7 @@ const pages: RouteRecordRaw[] = [
   { path: "/login", component: LoginPage, name: "Login" },
   { path: "/", component: HomePage, name: "Home" },
   { path: "/profile", component: ProfilePage, name: "Profile" },
-  { path: "/question", component: QuestionPage, props: true, name: "Question" },
+  { path: "/question/:question", component: QuestionPage, props: true, name: "Question" },
 ];
 
 const router = createRouter({
@@ -19,7 +19,6 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log("before each");
   if (to.name !== "Login" && !AuthService.instance.isLoggedIn.value) next({ name: "Login" });
   else next();
 });

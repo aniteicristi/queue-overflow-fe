@@ -30,7 +30,7 @@ export class AuthService {
     });
     if (response.status == 201) {
       this.isLoggedIn.value = true;
-      this.token = (await response.json()).token;
+      this.token = (await response.data).token;
       window.localStorage.setItem("access_token", this.token);
     }
 

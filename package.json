@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "class-transformer": "^0.5.1",
     "daisyui": "^2.10.0",
     "reflect-metadata": "^0.1.13",

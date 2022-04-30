@@ -1,4 +1,5 @@
 import { plainToInstance } from "class-transformer";
+import { Endpoints } from "../helpers/ endpoints";
 import { User, UserRole } from "../models/User.model";
 import { ApiClient } from "./api.client";
 
@@ -15,10 +16,10 @@ export class UserService {
   private constructor() {}
 
   public async getCurrentUser(): Promise<User | undefined> {
-    return new User(123, "GigaChad@gmail.com", UserRole.NORMAL, 23);
-    const response = await ApiClient.instance.get("users/self");
+    const response = await ApiClient.instance.get(Endpoints.getSelf);
     if (response.status == 200) {
-      return plainToInstance(User, await response.json())[0];
+      let user: User = plainToInstance(User, [response.data])[0];
+      return user;
     }
   }
 }

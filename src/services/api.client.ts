@@ -1,9 +1,12 @@
 import { AuthService } from "./auth.service";
 import questions from "../mocks/questions.json";
+import axios, { Axios, AxiosResponse } from "axios";
 export class ApiClient {
   private static _instance: ApiClient;
 
   private baseurl: string = "http://localhost:8000/";
+
+  private axiosInstance: Axios;
 
   public static get instance() {
     if (ApiClient._instance == null) {
@@ -12,30 +15,23 @@ export class ApiClient {
     } else return ApiClient._instance;
   }
 
-  public async get(path: string): Promise<Response> {
-    if (path == "questions") return new Response(new Blob([JSON.stringify(questions, null, 2)], { type: "application/json" }), { status: 200, statusText: "OK" });
-
-    return window.fetch(this.baseurl + path, {
-      method: "GET",
-      mode: "cors",
+  constructor() {
+    this.axiosInstance = axios.create({
+      baseURL: this.baseurl,
+      timeout: 1000,
       headers: {
         "Access-Control-Allow-Origin": "*",
-        Authentication: `Bearer ${AuthService.instance.token}`,
+        Authorization: `Bearer ${AuthService.instance.token}`,
         "Content-Type": "application/json",
       },
     });
   }
 
-  public async post(path: string, body: any): Promise<Response> {
-    return window.fetch(this.baseurl + path, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        Authentication: `Bearer ${AuthService.instance.token}`,
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+  public async get(path: string): Promise<AxiosResponse> {
+    return this.axiosInstance.get(path);
+  }
+
+  public async post(path: string, body: any): Promise<AxiosResponse> {
+    return this.axiosInstance.post(path, body);
   }
 }
