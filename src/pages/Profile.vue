@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { computed } from "@vue/reactivity";
 import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 import { User, UserRole } from "../models/User.model";
 import { UserService } from "../services/users.service";
 
 const currentUser = ref<User | null | undefined>(null);
+const route = useRoute();
 
 const isBanned = computed(() => currentUser.value?.role == UserRole.BANNED);
 const isAdmin = computed(() => currentUser.value?.role == UserRole.MODERATOR);
 
 onMounted(async () => {
-  currentUser.value = await UserService.instance.getCurrentUser();
+  currentUser.value = await UserService.instance.getUser(+route.params.user);
 });
 </script>
 

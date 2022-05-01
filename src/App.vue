@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import Navbar from "./components/global/Navbar.vue";
+import QuestionCreateCard from "./components/global/QuestionCreateCard.vue";
+import EditAnswerModal from "./components/global/EditAnswerModal.vue";
 </script>
 
 <template>
@@ -11,6 +13,7 @@ import Navbar from "./components/global/Navbar.vue";
       </transition>
     </router-view>
   </div>
+  <edit-answer-modal />
 </template>
 
 <style>

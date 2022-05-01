@@ -9,7 +9,7 @@ import { ApiClient } from "./api.client";
 import { UserService } from "./users.service";
 
 export class QuestionsService {
-  private static _instance: QuestionsService;
+  private static _instance: QuestionsService | null;
 
   public static get instance() {
     if (QuestionsService._instance == null) {
@@ -21,6 +21,10 @@ export class QuestionsService {
 
   private constructor() {
     this.questions = ref<Question[]>([]);
+  }
+
+  public static reset() {
+    this._instance = null;
   }
 
   public async getAll(): Promise<Ref<Question[]>> {
@@ -53,6 +57,15 @@ export class QuestionsService {
     }
   }
 
+  public async removeQuestion(id: number) {
+    const response = await ApiClient.instance.delete(`${Endpoints.deleteQuestion}/${id}`);
+    if (response.status != 200) return;
+    this.questions.value.splice(
+      this.questions.value.findIndex((q) => q.id == id),
+      1
+    );
+  }
+
   public async addAnswer(id: number, text: string): Promise<Answer | null> {
     const response = await ApiClient.instance.post(Endpoints.postAnswer, {
       question: id,
@@ -64,6 +77,19 @@ export class QuestionsService {
     }
     return null;
   }
+
+  public async removeAnswer(id: number) {
+    const response = await ApiClient.instance.delete(`${Endpoints.deleteAnswer}/${id}`);
+  }
+
+  public async editAnswer(answer: Answer, text: string) {
+    const response = await ApiClient.instance.patch(`${Endpoints.deleteAnswer}/${answer.id}`, {
+      text: text,
+    });
+    if (response.status == 200) return true;
+    return false;
+  }
+
   public async voteQuestion(id: number, value: number): Promise<boolean> {
     const response = await ApiClient.instance.post(Endpoints.voteQuestion, {
       questionId: id,
@@ -104,5 +130,29 @@ export class QuestionsService {
     } else {
       return null;
     }
+  }
+
+  public async search(term: string): Promise<Question[]> {
+    if (term[0] == "$") {
+      return await this.searchTag(term.substring(1).split(" ")[0]);
+    } else {
+      return await this.searchKeywords(term);
+    }
+  }
+
+  private async searchTag(term: string): Promise<Question[]> {
+    const response = await ApiClient.instance.get(`${Endpoints.searchTag}/${term}`);
+    if (response.status == 200) {
+      return plainToInstance(Question, response.data);
+    }
+    return [];
+  }
+
+  private async searchKeywords(term: string): Promise<Question[]> {
+    const response = await ApiClient.instance.get(`${Endpoints.searchTitle}/${term}`);
+    if (response.status == 200) {
+      return plainToInstance(Question, response.data);
+    }
+    return [];
   }
 }

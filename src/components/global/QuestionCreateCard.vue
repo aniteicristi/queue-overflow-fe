@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { Tag } from "../../models/Tag.model";
 import { QuestionsService } from "../../services/questions.service";
+import { TagsService } from "../../services/tags.service";
+const emit = defineEmits(["add"]);
 
 const tags = ref(<Tag[]>[]);
 const tagString = ref("");
@@ -9,10 +11,8 @@ const tagInput = ref(null);
 const titleInput = ref("");
 const textInput = ref("");
 
-const tagRecommend = ref([new Tag("vuejs"), new Tag("typescript"), new Tag("nestjs"), new Tag("java")]);
-
 const tagRecommendations = computed(() => {
-  return tagRecommend.value.filter((tag) => !tags.value.some((tagg) => tagg.identifier == tag.identifier));
+  return TagsService.instance.tags.value.filter((tag) => tag.identifier.startsWith(tagString.value) && !tags.value.some((tagg) => tagg.identifier == tag.identifier));
 });
 
 function removeTag(tag: Tag) {
@@ -26,7 +26,12 @@ function addTag(str: string) {
 
 function postQuestion() {
   QuestionsService.instance.addQuestion(titleInput.value, textInput.value, tags.value);
+  emit("add");
 }
+
+onMounted(async () => {
+  await TagsService.instance.getAll();
+});
 </script>
 
 <template>

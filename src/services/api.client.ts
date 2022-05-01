@@ -1,12 +1,18 @@
 import { AuthService } from "./auth.service";
-import questions from "../mocks/questions.json";
 import axios, { Axios, AxiosResponse } from "axios";
 export class ApiClient {
   private static _instance: ApiClient;
 
-  private baseurl: string = "http://localhost:8000/";
+  private static baseurl: string = "http://localhost:8000/";
 
   private axiosInstance: Axios;
+
+  public static login(username: string, password: string): Promise<AxiosResponse> {
+    return axios.post(ApiClient.baseurl + "auth/login", {
+      username: username,
+      password: password,
+    });
+  }
 
   public static get instance() {
     if (ApiClient._instance == null) {
@@ -17,7 +23,7 @@ export class ApiClient {
 
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: this.baseurl,
+      baseURL: ApiClient.baseurl,
       timeout: 1000,
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -26,6 +32,9 @@ export class ApiClient {
       },
     });
   }
+  public setToken(token: string) {
+    this.axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
 
   public async get(path: string): Promise<AxiosResponse> {
     return this.axiosInstance.get(path);
@@ -33,5 +42,11 @@ export class ApiClient {
 
   public async post(path: string, body: any): Promise<AxiosResponse> {
     return this.axiosInstance.post(path, body);
+  }
+  public async delete(path: string): Promise<AxiosResponse> {
+    return this.axiosInstance.delete(path);
+  }
+  public async patch(path: string, body: any): Promise<AxiosResponse> {
+    return this.axiosInstance.patch(path, body);
   }
 }

@@ -7,4 +7,11 @@ export enum Endpoints {
   voteAnswer = "/votes/answer",
   getVoteStatusQuestion = "/votes",
   getVoteStatusAnswer = "/votes",
+  getUser = "/users",
+  searchTag = "/questions/tag",
+  searchTitle = "/questions/title",
+  getTags = "/tags",
+  deleteQuestion = "/questions",
+  deleteAnswer = "/answers",
+  updateAnswer = "/answers",
 }

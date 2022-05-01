@@ -1,5 +1,8 @@
 import { reactive, Ref, ref } from "vue";
 import { ApiClient } from "./api.client";
+import { QuestionsService } from "./questions.service";
+import { TagsService } from "./tags.service";
+import { UserService } from "./users.service";
 
 export class AuthService {
   private static _instance: AuthService;
@@ -24,13 +27,10 @@ export class AuthService {
   isLoggedIn;
 
   public async login(email: string, password: string): Promise<number> {
-    const response = await ApiClient.instance.post("auth/login", {
-      username: email,
-      password: password,
-    });
+    const response = await ApiClient.login(email, password);
     if (response.status == 201) {
       this.isLoggedIn.value = true;
-      this.token = (await response.data).token;
+      this.token = response.data.token;
       window.localStorage.setItem("access_token", this.token);
     }
 
@@ -41,5 +41,6 @@ export class AuthService {
     this.token = "";
     this.isLoggedIn.value = false;
     window.localStorage.removeItem("access_token");
+    UserService.instance.currentUser.value = null;
   }
 }
